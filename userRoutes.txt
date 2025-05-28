@@ -1,0 +1,54 @@
+1. Register User
+ Endpoint: POST /register
+ Description: Registers a new user.
+
+{
+  "username": "string",
+  "email": "string",
+  "password": "string",
+  "retypepassword": "string",
+  "cnic_number": "string",
+  "role": "string"
+}
+
+
+
+2. Login User
+Endpoint: POST /login
+Description: Authenticates a user and returns a JWT token.
+Payload:
+
+{
+  "email": "string",
+  "password": "string"
+}
+
+
+Endpoint: GET /users/:id
+Description: Retrieves a user by their ID.
+Parameters:
+id (Path parameter): User ID.
+
+
+
+4. Get All Users
+Get All Users
+Endpoint: GET /users
+Description: Retrieves all users.
+Responses:
+
+
+
+5. Update User
+Endpoint: PUT /users/:id
+Description: Updates user information.
+Parameters:
+id (Path parameter): User ID.
+
+
+
+6. Delete User
+Endpoint: DELETE /users/:id
+Description: Deletes a user by their ID.
+Parameters:
+id (Path parameter): User ID.

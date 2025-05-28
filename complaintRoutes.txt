@@ -1,0 +1,55 @@
+
+Complaint Endpoints Documentation
+
+1. Create Complaint
+Endpoint: POST /complaints
+Description: Creates a new complaint.
+
+{
+  "user_id": "number",
+  "complaint_description": "string",
+  "cnic_number": "string",
+  "priority": "string", // Optional; default is 'medium'
+  "created_by": "string",
+  "author_email": "string"
+}
+
+
+
+
+2. Get All Complaints
+Endpoint: GET /complaints
+Description: Retrieves all complaints.
+
+
+3. Get Complaint by ID
+Endpoint: GET /complaints/:id
+Description: Retrieves a specific complaint by its ID.
+Parameters:
+id (Path parameter): Complaint ID.
+Responses:
+
+
+4. Delete Complaint
+Endpoint: DELETE /complaints/:id
+Description: Deletes a complaint by its ID.
+Parameters:
+id (Path parameter): Complaint ID.
+Responses:
+
+
+
+5. Update Complaint Status
+Endpoint: PUT /complaints/:id/status
+Description: Updates the status of a complaint (approve/reject).
+Parameters:
+id (Path parameter): Complaint ID
+
+	
+
+
+6.Get Complaints by Username
+Endpoint: GET /complaints/user/:username
+Description: Retrieves complaints submitted by a user based on their username.
+Parameters:
+username (Path parameter): Username of the user.

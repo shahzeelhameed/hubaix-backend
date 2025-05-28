@@ -1,0 +1,14 @@
+1. First, install the node modules in the current directory by running the command: npm install -f. After the installation is successful, the node modules will be set up.
+
+2. Next, create a new file named .env and define your environment variables in it.
+
+3. Ensure you update the credentials in your local database configuration file (db/index.js) with the following credentials:
+const db = new Pool({
+    user: "postgres",
+    host: "localhost",
+    database: "yourdatabasename",
+    password: yourdatabsepassword,
+    port: 5432,
+});
+
+4. After making these changes, run the command npm start to start the project. If everything is set up correctly, the project should run successfully.
