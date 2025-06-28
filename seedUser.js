@@ -60,9 +60,10 @@ const seedAdminUser = async () => {
     console.log("Inserted admin user ID:", result.insertId);
   } catch (error) {
     console.error("Error seeding admin user:", error.message);
-  } finally {
-    console.log("Closing the database connection.");
   }
+  // } finally {
+  //   console.log("Closing the database connection.");
+  // }
 
   console.log("Admin user seeding process completed.");
 };
