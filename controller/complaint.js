@@ -1,6 +1,6 @@
-const pool = require("../db/index.js");
-const sendComplaintEmail = require("../helper/sendEmail.js");
-const sendStatusUpdateEmail = require("../helper/sendStatusEmail.js");
+const pool = require('../db/index.js');
+const sendComplaintEmail = require('../helper/sendEmail.js');
+const sendStatusUpdateEmail = require('../helper/sendStatusEmail.js');
 
 const createComplaint = async (req, res) => {
   const {
@@ -14,16 +14,16 @@ const createComplaint = async (req, res) => {
 
   // Validate required fields
   if (!user_id || !complaint_description || !cnic_number || !created_by) {
-    return res.status(400).json({ message: "Required fields missing" });
+    return res.status(400).json({ message: 'Required fields missing' });
   }
   try {
     const [userResult] = await pool.query(
-      "SELECT email FROM users WHERE user_id = ?",
+      'SELECT email FROM users WHERE user_id = ?',
       [user_id]
     );
 
     if (userResult.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     const userEmail = userResult[0].email;
@@ -36,7 +36,7 @@ const createComplaint = async (req, res) => {
         user_id,
         complaint_description,
         cnic_number,
-        priority || "medium",
+        priority || 'medium',
       ]
     );
 
@@ -46,17 +46,15 @@ const createComplaint = async (req, res) => {
       user_id,
       complaint_description,
       cnic_number,
-      priority: priority || "medium",
+      priority: priority || 'medium',
     };
 
     await sendComplaintEmail(userEmail, author_email, newComplaint);
 
-    res
-      .status(201)
-      .json({
-        message: "Complaint created successfully",
-        complaint: newComplaint,
-      });
+    res.status(201).json({
+      message: 'Complaint created successfully',
+      complaint: newComplaint,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -78,15 +76,15 @@ const getComplaintById = async (req, res) => {
 
   try {
     const [result] = await pool.query(
-      `SELECT * FROM complaints WHERE complaint_id = ?`,
+      `SELECT * FROM complaints WHERE user_id = ?`,
       [id]
     );
 
     if (result.length === 0) {
-      return res.status(404).json({ message: "Complaint not found" });
+      return res.status(404).json({ message: 'Complaint not found' });
     }
 
-    res.status(200).json(result[0]);
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -102,10 +100,10 @@ const deleteComplaint = async (req, res) => {
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Complaint not found" });
+      return res.status(404).json({ message: 'Complaint not found' });
     }
 
-    res.status(200).json({ message: "Complaint deleted successfully" });
+    res.status(200).json({ message: 'Complaint deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -116,8 +114,8 @@ const updateComplaintStatus = async (req, res) => {
   const { status } = req.body;
 
   // Validate status
-  if (status !== "approved" && status !== "rejected") {
-    return res.status(400).json({ message: "Invalid status" });
+  if (status !== 'approved' && status !== 'rejected') {
+    return res.status(400).json({ message: 'Invalid status' });
   }
 
   try {
@@ -129,7 +127,7 @@ const updateComplaintStatus = async (req, res) => {
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Complaint not found" });
+      return res.status(404).json({ message: 'Complaint not found' });
     }
 
     const [updatedComplaint] = await pool.query(
@@ -139,19 +137,17 @@ const updateComplaintStatus = async (req, res) => {
     const user_id = updatedComplaint[0].user_id;
 
     const [userResult] = await pool.query(
-      "SELECT email FROM users WHERE user_id = ?",
+      'SELECT email FROM users WHERE user_id = ?',
       [user_id]
     );
     const userEmail = userResult[0].email;
 
     await sendStatusUpdateEmail(userEmail, updatedComplaint[0]);
 
-    res
-      .status(200)
-      .json({
-        message: `Complaint ${status} successfully`,
-        complaint: updatedComplaint[0],
-      });
+    res.status(200).json({
+      message: `Complaint ${status} successfully`,
+      complaint: updatedComplaint[0],
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -167,7 +163,7 @@ const getComplaintsByUsername = async (req, res) => {
     );
 
     if (userResult.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     const user_id = userResult[0].user_id;
