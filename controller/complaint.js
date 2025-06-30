@@ -180,6 +180,40 @@ const getComplaintsByUsername = async (req, res) => {
   }
 };
 
+const updateComplaintDescription = async (req, res) => {
+  const { id } = req.params;
+  const { description } = req.body;
+
+  if (!description) {
+    return res.status(400).json({ message: 'Description is required' });
+  }
+
+  try {
+    const [result] = await pool.query(
+      `UPDATE complaints 
+         SET complaint_description = ?, updated_at = CURRENT_TIMESTAMP 
+         WHERE complaint_id = ?`,
+      [description, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Complaint not found' });
+    }
+
+    const [updatedComplaint] = await pool.query(
+      `SELECT * FROM complaints WHERE complaint_id = ?`,
+      [id]
+    );
+
+    res.status(200).json({
+      message: 'Complaint description updated successfully',
+      complaint: updatedComplaint[0],
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createComplaint,
   getAllComplaints,
@@ -187,4 +221,5 @@ module.exports = {
   deleteComplaint,
   updateComplaintStatus,
   getComplaintsByUsername,
+  updateComplaintDescription,
 };

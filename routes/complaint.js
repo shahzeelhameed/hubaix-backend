@@ -7,6 +7,7 @@ const {
   deleteComplaint,
   updateComplaintStatus,
   getComplaintsByUsername,
+  updateComplaintDescription,
 } = require('../controller/complaint.js');
 
 complaintsRoutes.post('/api/create-complaint', createComplaint);
@@ -25,5 +26,10 @@ complaintsRoutes.put('/:id/status', updateComplaintStatus);
 
 // Route to get complaints by username
 complaintsRoutes.get('/user/:username', getComplaintsByUsername);
+
+complaintsRoutes.patch(
+  '/complaints/:id/description',
+  updateComplaintDescription
+);
 
 module.exports = complaintsRoutes;
